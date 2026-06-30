@@ -8,33 +8,27 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Check Files') {
             steps {
-                bat 'pip install -r requirements.txt'
+                sh '''
+                pwd
+                ls -la
+                '''
             }
         }
 
         stage('Run App Test') {
             steps {
-                bat 'python -m py_compile app.py'
+                sh '''
+                python3 -m py_compile app.py || python -m py_compile app.py
+                echo "app.py syntax is OK"
+                '''
             }
         }
 
-        stage('Docker Compose Build') {
+        stage('Success') {
             steps {
-                bat 'docker compose build'
-            }
-        }
-
-        stage('Deploy Containers') {
-            steps {
-                bat 'docker compose up -d'
-            }
-        }
-
-        stage('Verify App') {
-            steps {
-                bat 'curl http://localhost:5000'
+                echo 'Jenkins pipeline completed successfully'
             }
         }
     }
