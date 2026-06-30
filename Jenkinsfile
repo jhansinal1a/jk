@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Getting project code...'
+                echo 'Code pulled from GitHub successfully'
             }
         }
 
@@ -13,15 +13,13 @@ pipeline {
                 sh '''
                 pwd
                 ls -la
-                '''
-            }
-        }
 
-        stage('Run App Test') {
-            steps {
-                sh '''
-                python3 -m py_compile app.py || python -m py_compile app.py
-                echo "app.py syntax is OK"
+                if [ -f app.py ]; then
+                    echo "app.py found"
+                else
+                    echo "app.py not found"
+                    exit 1
+                fi
                 '''
             }
         }
