@@ -1,0 +1,11 @@
+groups:
+  - name: food-app-alerts
+    rules:
+      - alert: HighWebsiteTraffic
+        expr: website_requests_total > 5
+        for: 10s
+        labels:
+          severity: warning
+        annotations:
+          summary: "High website traffic detected"
+          description: "Website requests exceeded 5."
